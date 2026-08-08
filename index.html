@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Harshika Singh — MERN Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F4F0;
+  --ink:#111110;
+  --muted:#888;
+  --accent:#1A1A1A;
+  --line:rgba(17,17,16,0.12);
+  --card-bg:#ECEAE4;
+  --tag-bg:#E0DED8;
+  --font-display:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--ink);border-radius:2px}
+
+/* ── CURSOR ── */
+#cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--ink);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width 0.25s var(--ease),height 0.25s var(--ease),background 0.25s;
+  mix-blend-mode:difference;
+}
+#cursor.big{width:60px;height:60px}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:1.4rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  font-family:var(--font-display);
+  font-size:1rem;font-weight:700;
+  color:var(--ink);text-decoration:none;
+  letter-spacing:-0.02em;
+}
+.nav-right{display:flex;align-items:center;gap:2rem}
+.nav-link{
+  font-size:0.82rem;font-weight:500;
+  color:var(--muted);text-decoration:none;
+  letter-spacing:0.01em;
+  transition:color 0.2s;
+}
+.nav-link:hover{color:var(--ink)}
+.nav-cta{
+  font-family:var(--font-display);
+  font-size:0.82rem;font-weight:700;
+  color:var(--bg);background:var(--ink);
+  padding:0.55rem 1.3rem;border-radius:100px;
+  text-decoration:none;letter-spacing:-0.01em;
+  transition:opacity 0.2s;
+}
+.nav-cta:hover{opacity:0.75}
+
+/* ── SHAPEGRID CANVAS ── */
+#shapegrid-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  border:none;
+  background:transparent;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:0 2.5rem 3rem;
+  position:relative;overflow:hidden;
+}
+#hero > *:not(#shapegrid-canvas){ position:relative; z-index:1; }
+.hero-eyebrow{
+  font-size:0.78rem;font-weight:500;
+  color:var(--muted);letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:1.2rem;
+  display:flex;align-items:center;gap:10px;
+  /* Fix: keep eyebrow below the fixed nav */
+  position:relative;
+  z-index:1;
+}
+.hero-eyebrow::before{
+  content:'';display:inline-block;
+  width:22px;height:1px;background:var(--muted);
+}
+.hero-headline{
+  font-family:var(--font-display);
+  font-size:clamp(3.8rem,9vw,9.5rem);
+  font-weight:800;
+  line-height:0.92;
+  letter-spacing:-0.04em;
+  margin-bottom:2.5rem;
+  max-width:1100px;
+}
+.hero-headline em{
+  font-style:italic;font-weight:400;
+  color:var(--muted);
+}
+.hero-bottom{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  flex-wrap:wrap;gap:1.5rem;
+}
+.hero-desc{
+  font-size:1rem;font-weight:400;color:var(--muted);
+  max-width:320px;line-height:1.7;
+}
+.hero-meta{
+  display:flex;align-items:center;gap:2rem;
+  font-size:0.8rem;font-weight:500;color:var(--muted);
+}
+/* Hero action buttons */
+.hero-actions{
+  display:flex;align-items:center;gap:0.75rem;
+}
+.hero-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-display);
+  font-size:0.82rem;font-weight:700;
+  letter-spacing:-0.01em;
+  padding:0.7rem 1.5rem;
+  border-radius:100px;
+  text-decoration:none;
+  transition:all 0.22s var(--ease);
+  white-space:nowrap;
+}
+.hero-btn--outline{
+  color:var(--ink);
+  border:1px solid var(--line);
+  background:transparent;
+}
+.hero-btn--outline:hover{
+  background:var(--ink);color:var(--bg);
+  border-color:var(--ink);
+}
+.hero-btn--fill{
+  color:var(--bg);
+  background:var(--ink);
+  border:1px solid var(--ink);
+}
+.hero-btn--fill:hover{ opacity:0.72; }
+
+/* Circular rotating text scroll badge */
+.hero-scroll-center{
+  position:absolute;
+  bottom:2.5rem;
+  left:50%;
+  transform:translateX(-50%);
+  width:130px;height:130px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  user-select:none;
+  transition:opacity 0.4s;
+}
+.scroll-text-svg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  display:block;
+  overflow:visible;
+  animation:spinText 10s linear infinite;
+  color:var(--ink);
+}
+.scroll-text-svg text,
+.scroll-text-svg textPath{
+  font-family:var(--font-display);
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:3px;
+  fill:var(--ink);
+  text-transform:uppercase;
+  text-rendering:geometricPrecision;
+}
+@keyframes spinText{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.scroll-center-star{
+  position:relative;z-index:1;
+  font-size:1.6rem;
+  color:var(--ink);
+  line-height:1;
+  animation:starPulse 2.5s ease-in-out infinite;
+}
+@keyframes starPulse{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.15) rotate(30deg)}}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:1rem 0;overflow:hidden;white-space:nowrap;
+  margin:4rem 0;
+}
+.marquee-track{
+  display:inline-flex;gap:0;
+  animation:marquee 22s linear infinite;
+}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  font-family:var(--font-display);
+  font-size:0.8rem;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);
+  padding:0 2rem;
+  display:inline-flex;align-items:center;gap:2rem;
+}
+.marquee-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--line);display:inline-block;
+}
+
+/* ── SECTIONS ── */
+.section{
+  padding:6rem 2.5rem;
+  max-width:1200px;margin:0 auto;
+}
+.section-label{
+  font-size:0.72rem;font-weight:600;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:3rem;
+  display:flex;align-items:center;gap:10px;
+}
+.section-label::before{
+  content:'';width:16px;height:1px;background:var(--muted);
+}
+
+/* ── SERVICES ── */
+#services{border-top:1px solid var(--line)}
+.services-intro{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,3.5vw,3rem);
+  font-weight:700;letter-spacing:-0.03em;
+  line-height:1.15;margin-bottom:4rem;
+  max-width:520px;
+}
+.services-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:0;border-top:1px solid var(--line);
+}
+.service-card{
+  padding:2.5rem 2rem 2.5rem 0;
+  border-right:1px solid var(--line);
+  transition:background 0.3s;
+}
+.service-card:last-child{border-right:none;padding-right:0}
+.service-card:hover{background:var(--card-bg)}
+.service-num{
+  font-family:var(--font-display);
+  font-size:0.7rem;font-weight:700;
+  letter-spacing:0.1em;color:var(--muted);
+  margin-bottom:1.5rem;
+}
+.service-title{
+  font-family:var(--font-display);
+  font-size:1.35rem;font-weight:700;
+  letter-spacing:-0.02em;margin-bottom:1rem;
+}
+.service-desc{
+  font-size:0.88rem;color:var(--muted);
+  line-height:1.7;max-width:240px;
+}
+
+/* ══════════════════════════════════════
+   HORIZONTAL SCROLL CASES
+══════════════════════════════════════ */
+
+#work { border-top: 1px solid var(--line); }
+
+.work-intro {
+  padding: 5rem 2.5rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.work-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.work-title em { font-style: italic; font-weight: 400; color: var(--muted); }
+.work-intro-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.cases-link {
+  font-family: var(--font-display);
+  font-size: 0.82rem; font-weight: 700;
+  color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid var(--line);
+  padding: 0.55rem 1.2rem;
+  border-radius: 100px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  margin-bottom: 0.4rem;
+}
+.cases-link:hover { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+.cases-link-arrow { transition: transform 0.2s; }
+.cases-link:hover .cases-link-arrow { transform: translateY(3px); }
+
+#cases-pin-wrap {
+  position: relative;
+  height: 600vh;
+}
+#cases-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #0e0e0c;
+  color: #f0ede8;
+}
+#cases-progress-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(240,237,232,0.08);
+  z-index: 10;
+}
+#cases-progress-fill {
+  height: 100%;
+  background: #f0ede8;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+#cases-counter {
+  position: absolute;
+  top: 1.8rem; right: 2.5rem;
+  z-index: 10;
+  font-family: var(--font-display);
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(240,237,232,0.35);
+  display: flex; align-items: center; gap: 6px;
+}
+#cases-current { color: #f0ede8; }
+.cases-sep { opacity: 0.3; }
+
+#cases-scroll-hint {
+  position: absolute;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(240,237,232,0.3);
+  transition: opacity 0.4s;
+}
+#cases-scroll-hint.hidden { opacity: 0; pointer-events: none; }
+#cases-scroll-hint svg { animation: bob2 1.8s ease-in-out infinite; }
+@keyframes bob2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+#cases-track {
+  display: flex;
+  height: 100vh;
+  width: max-content;
+  will-change: transform;
+}
+.case-slide {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex-shrink: 0;
+}
+.case-media {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.case-media-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.case-mockup {
+  width: 72%;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
+  transform: perspective(900px) rotateY(6deg) rotateX(2deg);
+  transition: transform 0.6s var(--ease);
+}
+.case-slide:hover .case-mockup {
+  transform: perspective(900px) rotateY(2deg) rotateX(0deg);
+}
+.case-mockup-bar {
+  background: rgba(255,255,255,0.06);
+  padding: 0.6rem 0.8rem;
+  display: flex; gap: 6px; align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.case-mockup-bar span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: inline-block;
+}
+.case-mockup-bar span:nth-child(1) { background: #ff5f57; }
+.case-mockup-bar span:nth-child(2) { background: #febc2e; }
+.case-mockup-bar span:nth-child(3) { background: #28c840; }
+.case-mockup-screen { min-height: 180px; }
+.case-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 4rem 4rem 3.5rem;
+  border-left: 1px solid rgba(240,237,232,0.08);
+}
+.case-num {
+  font-family: var(--font-display);
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(240,237,232,0.28);
+  margin-bottom: 1.2rem;
+}
+.case-name {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #f0ede8;
+  margin-bottom: 1.4rem;
+}
+.case-desc {
+  font-size: 0.9rem;
+  color: rgba(240,237,232,0.5);
+  line-height: 1.75;
+  max-width: 380px;
+  margin-bottom: 1.8rem;
+}
+.case-tags {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  margin-bottom: 2.2rem;
+}
+.case-tag {
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: rgba(240,237,232,0.45);
+  border: 1px solid rgba(240,237,232,0.14);
+  padding: 4px 11px; border-radius: 100px;
+}
+.case-meta {
+  display: flex; gap: 2.5rem;
+  margin-bottom: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(240,237,232,0.08);
+}
+.case-stat-n {
+  font-family: var(--font-display);
+  font-size: 1.6rem; font-weight: 800;
+  letter-spacing: -0.03em; color: #f0ede8;
+  margin-bottom: 0.15rem;
+}
+.case-stat-l {
+  font-size: 0.72rem; color: rgba(240,237,232,0.35);
+  font-weight: 500; letter-spacing: 0.02em;
+}
+.case-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-display);
+  font-size: 0.82rem; font-weight: 700;
+  color: #0e0e0c; background: #f0ede8;
+  padding: 0.75rem 1.6rem; border-radius: 100px;
+  text-decoration: none; letter-spacing: -0.01em;
+  width: fit-content;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.case-cta:hover { opacity: 0.8; transform: translateY(-2px); }
+.case-cta span { transition: transform 0.2s; }
+.case-cta:hover span { transform: translate(2px,-2px); }
+
+#cases-dots {
+  position: absolute;
+  bottom: 2rem; left: 2.5rem;
+  z-index: 10;
+  display: flex; gap: 8px; align-items: center;
+}
+.cases-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(240,237,232,0.2);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.cases-dot.active {
+  background: #f0ede8;
+  transform: scale(1.4);
+}
+
+/* ── ABOUT ── */
+
+#about{
+  border-top:1px solid var(--line);
+}
+
+.about-title{
+  text-align:center;
+  font-family:var(--font-display);
+  font-size:clamp(2.5rem,5vw,4rem);
+  font-weight:800;
+  margin-bottom:4rem;
+  letter-spacing:-0.03em;
+}
+
+.about-container{
+  display:grid;
+  grid-template-columns:350px 1fr;
+  gap:4rem;
+  align-items:start;
+}
+
+.about-image img{
+  width:100%;
+  border-radius:24px;
+  display:block;
+  object-fit:cover;
+}
+
+.about-content{
+  display:flex;
+  flex-direction:column;
+  gap:2rem;
+}
+
+.about-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+}
+
+.info-card{
+  background:var(--card-bg);
+  border:1px solid var(--line);
+  border-radius:32px;
+  padding:2rem;
+  text-align:center;
+}
+
+.info-card i{
+  font-size:1.5rem;
+  margin-bottom:1rem;
+}
+
+.info-card h3{
+  font-size:1.4rem;
+  margin-bottom:1rem;
+  font-weight:700;
+}
+
+.info-card p{
+  color:var(--muted);
+  line-height:1.7;
+  font-size:0.95rem;
+}
+
+.about-text{
+  color:var(--muted);
+  font-size:1rem;
+  line-height:1.9;
+  max-width:900px;
+}
+
+.about-text p + p{
+  margin-top:1rem;
+}
+
+/* Mobile */
+
+@media(max-width:992px){
+
+  .about-container{
+    grid-template-columns:1fr;
+  }
+
+  .about-image{
+    max-width:320px;
+    margin:auto;
+  }
+
+  .about-cards{
+    grid-template-columns:1fr;
+  }
+
+  .about-title{
+    margin-bottom:2rem;
+  }
+}
+
+/* ── SKILLS STRIP ── */
+#skills {
+  border-top: 1px solid var(--line);
+}
+
+.skills-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 3rem;
+}
+
+.skills-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.skill-col {
+  padding: 2rem;
+  border-right: 1px solid var(--line);
+}
+
+.skill-col:last-child {
+  border-right: none;
+}
+
+.skill-col-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--line);
+}
+
+.skill-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.skill-list li {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--ink);
+}
+
+.skill-list li:last-child {
+  border-bottom: none;
+}
+
+.skill-level {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--tag-bg);
+  padding: 3px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+
+/* ── CONTACT ── */
+#contact{
+  background:var(--ink);color:var(--bg);
+  padding:7rem 2.5rem;
+  position:relative;overflow:hidden;
+}
+#contact::before{
+  content:'';position:absolute;
+  top:-200px;right:-200px;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(255,255,255,0.04) 0%,transparent 60%);
+  border-radius:50%;pointer-events:none;
+}
+.contact-inner{max-width:1200px;margin:0 auto}
+.contact-label{
+  font-size:0.72rem;font-weight:600;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);margin-bottom:3rem;
+  display:flex;align-items:center;gap:10px;
+}
+.contact-label::before{content:'';width:16px;height:1px;background:rgba(255,255,255,0.35)}
+.contact-headline{
+  font-family:var(--font-display);
+  font-size:clamp(2.8rem,7vw,7.5rem);
+  font-weight:800;letter-spacing:-0.04em;
+  line-height:0.9;margin-bottom:4rem;
+}
+.contact-headline em{font-style:italic;font-weight:400;color:rgba(255,255,255,0.35)}
+.contact-bottom{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  flex-wrap:wrap;gap:2rem;
+  padding-top:3rem;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+.contact-info{display:flex;flex-direction:column;gap:0.6rem}
+.contact-link{
+  font-family:var(--font-display);
+  font-size:1.1rem;font-weight:600;
+  letter-spacing:-0.02em;color:var(--bg);
+  text-decoration:none;
+  transition:opacity 0.2s;display:inline-flex;align-items:center;gap:8px;
+}
+.contact-link:hover{opacity:0.55}
+.contact-link::after{content:'↗';font-size:0.9em}
+.contact-cta{
+  font-family:var(--font-display);
+  font-size:0.88rem;font-weight:700;
+  color:var(--ink);background:var(--bg);
+  padding:0.9rem 2.2rem;border-radius:100px;
+  text-decoration:none;letter-spacing:-0.01em;
+  transition:opacity 0.2s;display:inline-block;
+}
+.contact-cta:hover{opacity:0.8}
+.contact-socials{display:flex;gap:1rem;margin-top:2rem}
+.social-btn{
+  font-size:0.78rem;font-weight:600;
+  color:rgba(255,255,255,0.45);
+  border:1px solid rgba(255,255,255,0.12);
+  padding:0.5rem 1rem;border-radius:100px;
+  text-decoration:none;letter-spacing:0.04em;
+  text-transform:uppercase;
+  transition:all 0.2s;
+}
+.social-btn:hover{color:var(--bg);border-color:rgba(255,255,255,0.4)}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);color:rgba(255,255,255,0.3);
+  padding:1.5rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:0.75rem;font-weight:500;
+  border-top:1px solid rgba(255,255,255,0.07);
+  max-width:100%;
+}
+footer a{color:rgba(255,255,255,0.3);text-decoration:none}
+footer a:hover{color:rgba(255,255,255,0.6)}
+
+/* ── REVEAL ── */
+.reveal{
+  opacity:0;transform:translateY(40px);
+  transition:opacity 0.7s var(--ease),transform 0.7s var(--ease);
+}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ══════════════════════════════════════
+   JOE GARNER–STYLE LOADER
+══════════════════════════════════════ */
+
+/* Lock scroll while loading */
+body.loading { overflow: hidden; }
+
+/* The two curtain panels */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.loader-panel {
+  width: 100%;
+  height: 50%;
+  background: #0e0e0c;
+  position: relative;
+  overflow: hidden;
+  transition: transform 1.1s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.loader-panel.top    { transform: translateY(0); }
+.loader-panel.bottom { transform: translateY(0); }
+
+#loader.done .loader-panel.top    { transform: translateY(-100%); }
+#loader.done .loader-panel.bottom { transform: translateY(100%); }
+
+/* ── Content lives in the top panel only ── */
+.loader-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.2rem 2.5rem;
+  color: #f0ede8;
+  /* Text in TOP panel: anchored to bottom of panel */
+  justify-content: flex-end;
+}
+
+/* Year stamp – top-left corner of TOP panel */
+.loader-year {
+  position: absolute;
+  top: 2.2rem;
+  left: 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(240,237,232,0.38);
+  line-height: 1.5;
+}
+
+/* Big name + role text – bottom of TOP panel */
+.loader-name {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 11vw, 11rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: #f0ede8;
+  /* clip-path reveal per word */
+}
+
+.loader-name .word {
+  display: block;
+  overflow: hidden;
+}
+.loader-name .word span {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Percent counter – bottom-right of BOTTOM panel */
+.loader-pct {
+  position: absolute;
+  bottom: 2.2rem;
+  right: 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(240,237,232,0.4);
+}
+
+/* Role line – bottom-left of BOTTOM panel */
+.loader-role {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 2.5rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(240,237,232,0.3);
+}
+
+/* Thin progress line spanning BOTH panels, centered on the seam */
+.loader-line {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: rgba(240,237,232,0.18);
+  z-index: 10001;
+  transition: width 0.08s linear;
+}
+
+/* After loader is done, hide everything */
+#loader.hidden {
+  display: none;
+}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .case-slide{grid-template-columns:1fr;grid-template-rows:42vh 58vh}
+  .case-media{height:42vh}
+  .case-info{padding:1.6rem 1.4rem;justify-content:flex-start;overflow-y:auto;border-left:none;border-top:1px solid rgba(240,237,232,0.08)}
+  .case-desc{font-size:0.82rem}
+  .case-name{font-size:1.8rem}
+  .work-intro{padding:3.5rem 1.4rem 2rem}
+  #cases-counter{top:1.2rem;right:1.4rem}
+  #cases-dots{bottom:1.2rem;left:1.4rem}
+}
+@media(max-width:768px){
+  nav{padding:1.2rem 1.4rem}
+  .nav-link{display:none}
+  #hero{padding:0 1.4rem 2.5rem}
+  .hero-headline{font-size:clamp(3rem,13vw,5rem)}
+  .hero-scroll-center{display:none}
+  .section{padding:4rem 1.4rem}
+  .services-grid,.skills-cols,.about-grid,.faq-intro{grid-template-columns:1fr;gap:0}
+  .service-card{border-right:none;border-bottom:1px solid var(--line);padding:2rem 0}
+  .skill-col{border-right:none;border-bottom:1px solid var(--line);padding:2rem 0}
+  .work-header{flex-direction:column;gap:1rem}
+  .project-preview{display:none}
+  #contact{padding:5rem 1.4rem}
+  .contact-headline{font-size:clamp(2.2rem,10vw,4rem)}
+  footer{flex-direction:column;gap:0.5rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ STYLE LOADER ══ -->
+<div id="loader">
+  <!-- top curtain -->
+  <div class="loader-panel top">
+    <div class="loader-content">
+      <!-- year stamp top-left -->
+      <div class="loader-year">( 20<br>26 )</div>
+      <!-- big name bottom of top panel -->
+      <div class="loader-name">
+        <div class="word"><span>HARSHIKA</span></div>
+        <div class="word"><span>SINGH</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- bottom curtain -->
+  <div class="loader-panel bottom">
+    <div class="loader-role">Full Stack Developer</div>
+    <div class="loader-pct" id="loader-pct">0%</div>
+  </div>
+</div>
+<!-- thin seam line -->
+<div class="loader-line" id="loader-line"></div>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+
+<!-- Hover preview for projects -->
+<div class="project-preview" id="preview">
+  <div class="preview-placeholder" id="preview-emoji"></div>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#hero" class="nav-logo">HARSHIKA SINGH</a>
+  <div class="nav-right">
+    <a href="#about" class="nav-link">About</a>
+    <a href="#work" class="nav-link">Project</a>
+    <a href="#skills" class="nav-link">Skill</a>
+    <a href="#contact" class="nav-cta">Let's talk</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div id="hero">
+  <canvas id="shapegrid-canvas"></canvas>
+  <div class="hero-eyebrow">Available for new projects</div>
+  <h1 class="hero-headline">
+    Full&thinsp;Stack<br>
+    <em>MERN</em><br>
+    Developer
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      Computer Science Engineering Graduate (2026) and Full-Stack Developer with practical experience in MERN Stack technologies, scalable application development, and modern web architecture. Committed to building reliable, high-quality software solutions that create meaningful user impact.
+    </p>
+    <div class="hero-actions">
+      <a href="assets/Harshika_Resume.pdf.pdf" download class="hero-btn hero-btn--outline">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M7 9l-3-3M7 9l3-3M1 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download CV
+      </a>
+      <a href="#contact" class="hero-btn hero-btn--fill">
+        Contact me
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Circular rotating "SCROLL DOWN" text badge -->
+  <div class="hero-scroll-center" id="heroScroll">
+    <svg class="scroll-text-svg" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <path id="scrollCircle" d="M 65,65 m -46,0 a 46,46 0 1,1 92,0 a 46,46 0 1,1 -92,0"/>
+      </defs>
+      <text>
+        <textPath href="#scrollCircle" startOffset="50%" text-anchor="middle">SCROLL DOWN ✦ SCROLL DOWN ✦</textPath>
+      </text>
+     </svg>
+    <span class="scroll-center-star">✳</span>
+  </div>
+</div>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">MongoDB <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Express.js <span class="marquee-dot"></span></span>
+    <span class="marquee-item">React <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Node.js <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Javascript <span class="marquee-dot"></span></span>
+    <span class="marquee-item">HTML/CSS <span class="marquee-dot"></span></span>
+    <span class="marquee-item">REST API<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Vite<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Vercel<span class="marquee-dot"></span></span>
+  
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">MongoDB <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Express.js <span class="marquee-dot"></span></span>
+    <span class="marquee-item">React <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Node.js <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Javascript <span class="marquee-dot"></span></span>
+    <span class="marquee-item">HTML/CSS <span class="marquee-dot"></span></span>
+    <span class="marquee-item">REST API <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Vite<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Vercel<span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ── SERVICES ── -->
+<section id="services" class="section">
+  <p class="section-label">What I do</p>
+  <p class="services-intro reveal">A seamless combination of engineering and design thinking — built from scratch, every time.</p>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <p class="service-num">01</p>
+      <h3 class="service-title">Full&thinsp;Stack<br>Development</h3>
+      <p class="service-desc">End-to-end web applications built with the MERN stack. From database architecture to polished UI.</p>
+    </div>
+    <div class="service-card reveal" style="padding-left:2rem">
+      <p class="service-num">02</p>
+      <h3 class="service-title">API &amp;<br>Architecture</h3>
+      <p class="service-desc">Scalable REST and GraphQL APIs with Redis caching, microservices, and production-grade reliability.</p>
+    </div>
+    <div class="service-card reveal" style="padding-left:2rem">
+      <p class="service-num">03</p>
+      <h3 class="service-title">Real-time<br>Systems</h3>
+      <p class="service-desc">Live dashboards, WebSocket connections, and event-driven systems that handle massive concurrency.</p>
+    </div>
+  </div>
+</section>
+<!-- ── About ── -->
+
+<section id="about" class="section">
+  <p class="section-label">Get To Know More</p>
+
+  <h2 class="about-title">About Me</h2>
+
+  <div class="about-container">
+
+    <!-- Left Image -->
+    <div class="about-image reveal">
+      <img src="assets/profile.jpg" alt="Harshika">
+    </div>
+
+    <!-- Right Content -->
+    <div class="about-content">
+
+      <div class="about-cards">
+
+        <div class="info-card reveal">
+          <i class="fas fa-award"></i>
+          <h3>Experience</h3>
+          <p><strong>Ex-Artificial Intelligence Intern</strong> at Edunet Foundation</p>
+          <p><strong>Ex-Web Development Intern</strong> at R.D.S.O</p>
+        </div>
+
+        <div class="info-card reveal">
+          <i class="fas fa-user-graduate"></i>
+          <h3>Education</h3>
+          <p><strong>B.Tech (Computer Science Engineering)</strong></p>
+          <p>Babasaheb Bhimrao Ambedkar University, Lucknow</p>
+        </div>
+
+      </div>
+
+      <div class="about-text reveal">
+        <p>
+          Computer Science Engineering Graduate (2026) and Full-Stack Developer
+          with practical experience in MERN Stack technologies, scalable
+          application development, and modern web architecture. Through academic
+          projects and internships, I have developed responsive web applications,
+          REST APIs, and database-driven solutions while focusing on clean,
+          maintainable, and user-centric development practices.
+        </p>
+
+        <p>
+          I enjoy solving complex problems, learning emerging technologies, and
+          building software that delivers real-world impact. Currently seeking
+          opportunities to contribute to innovative engineering teams while
+          continuing to grow as a software developer.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ── WORK HORIZONTAL SCROLL CASES ── -->
+<section id="work">
+
+  <!-- Section header (normal flow, above the pinned area) -->
+  <div class="work-intro">
+    <div class="work-intro-inner">
+      <p class="section-label">Selected work</p>
+      <div class="work-intro-row">
+        <h2 class="work-title reveal">Things I've<br><em>built</em></h2>
+        <a href="#all-cases" class="cases-link reveal">
+          All cases
+          <span class="cases-link-arrow">↓</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll-pin wrapper: height = 100vh × number of projects -->
+  <div id="cases-pin-wrap">
+    <!-- Sticky viewport that stays fixed while scrolling through pin-wrap -->
+    <div id="cases-sticky">
+
+      <!-- Progress bar across top -->
+      <div id="cases-progress-bar"><div id="cases-progress-fill"></div></div>
+
+      <!-- Slide counter top-right -->
+      <div id="cases-counter">
+        <span id="cases-current">01</span>
+        <span class="cases-sep">/</span>
+        <span id="cases-total">05</span>
+      </div>
+
+      <!-- The horizontal track -->
+      <div id="cases-track">
+
+        <!-- CASE 01 -->
+<div class="case-slide" data-index="0">
+  <div class="case-media">
+    <div class="case-media-inner" style="background:linear-gradient(135deg,#9a4008,#da6522)">
+      <div class="case-mockup">
+        <div class="case-mockup-bar"><span></span><span></span><span></span></div>
+        <div class="case-mockup-screen" style="padding:0; overflow:hidden; min-height:180px;">
+          <img 
+            src="/assets/mannka.png" 
+            alt="Mannka website screenshot"
+            style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="case-info">
+    <div class="case-num">01</div>
+    <h3 class="case-name">Mannka</h3>
+    <p class="case-desc">A full-stack VIP Darshan platform with secure authentication, real-time booking management, and responsive user interfaces. Scalable web architecture improving booking efficiency and platform reliability.</p>
+    <div class="case-tags">
+      <span class="case-tag">React</span>
+      <span class="case-tag">CSS</span>
+      <span class="case-tag">Firebase</span>
+    </div>
+    <div class="case-meta">
+      <div class="case-stat"><div class="case-stat-n">RT</div><div class="case-stat-l">Real-time bookings</div></div>
+      <div class="case-stat"><div class="case-stat-n">Secure</div><div class="case-stat-l">Authentication</div></div>
+    </div>
+    <a href="https://www.mannka.com" class="case-cta">View project <span>↗</span></a>
+  </div>
+</div>
+
+        <!-- CASE 02 -->
+        <div class="case-slide" data-index="1">
+        
+  <div class="case-media">
+    <div class="case-media-inner" style="background:linear-gradient(135deg,#1a0000,#2e0000)">
+      <div class="case-mockup">
+        <div class="case-mockup-bar"><span></span><span></span><span></span></div>
+        <div class="case-mockup-screen" style="padding:0; overflow:hidden; min-height:180px;">
+          <img 
+            src="/assets/tedxbbau.png" 
+            alt="TEDxBBAU website screenshot"
+            style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="case-info">
+    <div class="case-num">02</div>
+    <h3 class="case-name">TEDxBBAU</h3>
+    <p class="case-desc">Official TEDxBBAU website delivering a scalable, responsive, and high-performance user experience. Collaborated across design and content teams to implement seamless event presentation, speaker showcases, and registration workflows.</p>
+    <div class="case-tags">
+      <span class="case-tag">React</span>
+      <span class="case-tag">CSS</span>
+      <span class="case-tag">Firebase</span>
+    </div>
+    <div class="case-meta">
+      <div class="case-stat"><div class="case-stat-n">RT</div><div class="case-stat-l">Real-time bookings</div></div>
+      <div class="case-stat"><div class="case-stat-n">Secure</div><div class="case-stat-l">Authentication</div></div>
+    </div>
+    <a href="https://www.tedxbbau.online" class="case-cta">View project <span>↗</span></a>
+  </div>
+</div>
+        
+
+        <!-- CASE 03 -->
+        <div class="case-slide" data-index="2">
+  <div class="case-media">
+    <div class="case-media-inner" style="background:linear-gradient(135deg,#001a1a,#002e2e)">
+      <div class="case-mockup">
+        <div class="case-mockup-bar"><span></span><span></span><span></span></div>
+        <div class="case-mockup-screen" style="padding:0; overflow:hidden; min-height:180px;">
+          <img 
+            src="/assets/pathfinder.png" 
+            alt="Pathfinder website screenshot"
+            style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="case-info">
+    <div class="case-num">03</div>
+    <h3 class="case-name">Pathfinder</h3>
+    <p class="case-desc">An interactive maze game with real-time scoring and dynamic difficulty adjustment. Built with modern web technologies to deliver a seamless gaming experience across all devices.</p>
+    <div class="case-tags">
+      <span class="case-tag">React</span>
+      <span class="case-tag">CSS</span>
+      <span class="case-tag">Firebase</span>
+    </div>
+    <div class="case-meta">
+      <div class="case-stat"><div class="case-stat-n">RT</div><div class="case-stat-l">Real-time bookings</div></div>
+      <div class="case-stat"><div class="case-stat-n">Secure</div><div class="case-stat-l">Authentication</div></div>
+    </div>
+    <a href="" class="case-cta">View project <span>↗</span></a>
+  </div>
+</div>
+
+        <!-- CASE 04 -->
+        <div class="case-slide" data-index="3">
+  <div class="case-media">
+    <div class="case-media-inner" style="background:linear-gradient(135deg,#050d10,#0a1a20)">
+      <div class="case-mockup">
+        <div class="case-mockup-bar"><span></span><span></span><span></span></div>
+        <div class="case-mockup-screen" style="padding:0; overflow:hidden; min-height:180px;">
+          <img 
+            src="/assets/maze.png" 
+            alt="Maze website screenshot"
+            style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="case-info">
+    <div class="case-num">04</div>
+    <h3 class="case-name">Maze</h3>
+    <p class="case-desc">An interactive maze game with real-time scoring and dynamic difficulty adjustment. Built with modern web technologies to deliver a seamless gaming experience across all devices .</p>
+    <div class="case-tags">
+      <span class="case-tag">React</span>
+      <span class="case-tag">CSS</span>
+      <span class="case-tag">Firebase</span>
+    </div>
+    <div class="case-meta">
+      <div class="case-stat"><div class="case-stat-n">RT</div><div class="case-stat-l">Real-time bookings</div></div>
+      <div class="case-stat"><div class="case-stat-n">Secure</div><div class="case-stat-l">Authentication</div></div>
+    </div>
+    <a href="#" class="case-cta">View project <span>↗</span></a>
+  </div>
+</div>
+
+        <!-- CASE 05 -->
+        <div class="case-slide" data-index="4">  
+  <div class="case-media">
+    <div class="case-media-inner" style="background:linear-gradient(135deg,#676760,#f7f7f3)">
+      <div class="case-mockup">
+        <div class="case-mockup-bar"><span></span><span></span><span></span></div>
+        <div class="case-mockup-screen" style="padding:0; overflow:hidden; min-height:180px;">
+          <img 
+            src="/assets/portfolio.png" 
+            alt="Portfolio website screenshot"
+            style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="case-info">
+    <div class="case-num">05</div>
+    <h3 class="case-name">Portfolio</h3>
+    <p class="case-desc">A full-stack VIP Darshan platform with secure authentication, real-time booking management, and responsive user interfaces. Scalable web architecture improving booking efficiency and platform reliability.</p>
+    <div class="case-tags">
+      <span class="case-tag">React</span>
+      <span class="case-tag">CSS</span>
+      <span class="case-tag">Firebase</span>
+    </div>
+    <div class="case-meta">
+      <div class="case-stat"><div class="case-stat-n">RT</div><div class="case-stat-l">Real-time bookings</div></div>
+      <div class="case-stat"><div class="case-stat-n">Secure</div><div class="case-stat-l">Authentication</div></div>
+    </div>
+    <a href="#" class="case-cta">View project <span>↗</span></a>
+  </div>
+</div>
+
+      </div><!-- /cases-track -->
+
+        
+
+     
+
+      <!-- Dot nav bottom-left -->
+      <div id="cases-dots"></div>
+
+      <!-- Scroll hint -->
+      <div id="cases-scroll-hint">
+        <span>Scroll to explore</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M8 13l-3-3M8 13l3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+    </div><!-- /cases-sticky -->
+  </div><!-- /cases-pin-wrap -->
+
+</section><!-- /work -->
+
+
+<!-- ── SKILLS ── -->
+<section id="skills" class="section">
+  <p class="section-label">Tech stack</p>
+  <h2 class="skills-headline reveal">Skills &amp; tools</h2>
+  <div class="skills-cols">
+
+    <div class="skill-col reveal">
+      <div class="skill-col-label">Languages</div>
+      <ul class="skill-list">
+        <li>HTML <span class="skill-level">Expert</span></li>
+        <li>CSS <span class="skill-level">Expert</span></li>
+        <li>JavaScript <span class="skill-level">Expert</span></li>
+        <li>Java <span class="skill-level">Mid</span></li>
+        <li>React.js <span class="skill-level">Expert</span></li>
+        <li>Tailwind CSS <span class="skill-level">Expert</span></li>
+      </ul>
+    </div>
+
+    <div class="skill-col reveal" style="transition-delay:0.1s;">
+      <div class="skill-col-label">Backend &amp; Databases</div>
+      <ul class="skill-list">
+        <li>Node.js <span class="skill-level">Advanced</span></li>
+        <li>Express.js <span class="skill-level">Advanced</span></li>
+        <li>REST API <span class="skill-level">Beginner</span></li>
+        <li>MongoDB <span class="skill-level">Advanced</span></li>
+        <li>Firebase <span class="skill-level">Mid</span></li>
+        <li>Vite <span class="skill-level">Mid</span></li>
+      </ul>
+    </div>
+
+    <div class="skill-col reveal" style="transition-delay:0.2s;">
+      <div class="skill-col-label">Tools &amp; Platforms</div>
+      <ul class="skill-list">
+        <li>VS Code <span class="skill-level">Expert</span></li>
+        <li>GitHub <span class="skill-level">Advanced</span></li>
+        <li>Google Colab <span class="skill-level">Beginner</span></li>
+        <li>Vercel <span class="skill-level">Advanced</span></li>
+        <li>Netlify <span class="skill-level">Beginner</span></li>
+      </ul>
+    </div>
+
+    <div class="skill-col reveal" style="transition-delay:0.3s;">
+      <div class="skill-col-label">Soft Skills</div>
+      <ul class="skill-list">
+        <li>Critical Thinking </li>
+        <li>Problem-solving </li>
+        <li>Team Collaboration </li>
+        <li>Communication  </li>
+        <li>Adaptability </li>
+        <li>Time Management </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="contact-inner">
+    <p class="contact-label">Get in touch</p>
+    <h2 class="contact-headline">
+      Let's build<br><em>something</em><br>great.
+    </h2>
+    <div class="contact-bottom">
+      <div>
+        <div class="contact-info">
+          <a href="mailto:harshikas898@gmail.com" class="contact-link">harshikas898@gmail.com</a>
+          <a href="tel:+919336932926" class="contact-link">+91 93369 32926</a>
+        </div>
+        <div class="contact-socials">
+          <a href="https://github.com/HARSHIKA-1508" class="social-btn">GitHub</a>
+          <a href="https://www.linkedin.com/in/harshika9415/" class="social-btn">LinkedIn</a>
+          <a href="https://www.instagram.com/harshika4662/" class="social-btn">Instagram</a>
+        </div>
+      </div>
+      <a href="mailto:harshikas898@gmail.com" class="contact-cta">Say hello →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span>© 2024 Harshika Singh</span>
+  <span>MERN Stack Developer</span>
+  <a href="#">Back to top ↑</a>
+</footer>
+
+<script>
+// ══════════════════════════════════════
+// STYLE LOADER
+// ══════════════════════════════════════
+(function () {
+  // Lock scroll
+  document.body.classList.add('loading');
+
+  const loader   = document.getElementById('loader');
+  const pctEl    = document.getElementById('loader-pct');
+  const lineEl   = document.getElementById('loader-line');
+  const words    = document.querySelectorAll('.loader-name .word span');
+
+  let pct = 0;
+  let animFrame;
+
+  // Slide words up immediately
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      words.forEach((w, i) => {
+        w.style.transitionDelay = (0.1 + i * 0.12) + 's';
+        w.style.transform = 'translateY(0)';
+      });
+    }, 80);
+  });
+
+
+  
+  // Counter speed: fast at start, slows toward 90, then waits for done()
+  function tick() {
+    const target = 92; // natural ceiling; rest fills on "complete"
+    if (pct < target) {
+      const step = pct < 40  ? 1.8
+                 : pct < 70  ? 1.1
+                 : pct < 85  ? 0.55
+                 :              0.25;
+      pct = Math.min(pct + step, target);
+      pctEl.textContent = Math.floor(pct) + '%';
+      lineEl.style.width = pct + '%';
+      animFrame = requestAnimationFrame(tick);
+    }
+  }
+  tick();
+
+  function finishLoader() {
+    cancelAnimationFrame(animFrame);
+
+    // Snap to 100%
+    let fill = pct;
+    function snapToHundred() {
+      fill += (100 - fill) * 0.18;
+      if (fill >= 99.5) {
+        pctEl.textContent = '100%';
+        lineEl.style.width = '100%';
+        revealSite();
+        return;
+      }
+      pctEl.textContent = Math.floor(fill) + '%';
+      lineEl.style.width = fill + '%';
+      requestAnimationFrame(snapToHundred);
+    }
+    snapToHundred();
+  }
+
+  function revealSite() {
+    setTimeout(() => {
+      // Hide line
+      lineEl.style.transition = 'opacity 0.3s';
+      lineEl.style.opacity = '0';
+
+      // Split curtains
+      loader.classList.add('done');
+
+      // Unlock scroll & clean up after animation
+      setTimeout(() => {
+        document.body.classList.remove('loading');
+        loader.classList.add('hidden');
+        // Trigger scroll-reveal for elements in view
+        document.querySelectorAll('.reveal').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight) el.classList.add('in');
+        });
+      }, 1200);
+    }, 300);
+  }
+
+  // Trigger finish when page is fully loaded (or after max 3.2s)
+  const minDelay = 1800; // minimum loader show time in ms
+  const startTime = Date.now();
+
+  function onReady() {
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, minDelay - elapsed);
+    setTimeout(finishLoader, remaining);
+  }
+
+  if (document.readyState === 'complete') {
+    onReady();
+  } else {
+    window.addEventListener('load', onReady);
+    // Safety fallback
+    setTimeout(onReady, 3200);
+  }
+})();
+
+// ── CUSTOM CURSOR ──
+const cur = document.getElementById('cursor');
+let mx = -200, my = -200, cx = -200, cy = -200;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+document.querySelectorAll('a,button,.project-item').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('big'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+(function animateCursor() {
+  cx += (mx - cx) * 0.12;
+  cy += (my - cy) * 0.12;
+  cur.style.left = cx + 'px';
+  cur.style.top = cy + 'px';
+  requestAnimationFrame(animateCursor);
+})();
+  
+
+
+
+// ── PROJECT HOVER PREVIEW ──
+const preview = document.getElementById('preview');
+const previewEmoji = document.getElementById('preview-emoji');
+let previewActive = false;
+
+document.querySelectorAll('.project-item').forEach(item => {
+  item.addEventListener('mouseenter', e => {
+    previewEmoji.textContent = item.dataset.emoji || '📁';
+    preview.style.background = item.dataset.color || '#1a1a1a';
+    preview.classList.add('show');
+    previewActive = true;
+  });
+  item.addEventListener('mouseleave', () => {
+    preview.classList.remove('show');
+    previewActive = false;
+  });
+});
+
+document.addEventListener('mousemove', e => {
+  if (!previewActive) return;
+  const x = e.clientX + 24;
+  const y = e.clientY - 60;
+  preview.style.left = Math.min(x, window.innerWidth - 340) + 'px';
+  preview.style.top = Math.max(y, 10) + 'px';
+});
+
+// ══════════════════════════════════════
+// JESSE-STYLE HORIZONTAL SCROLL CASES
+// ══════════════════════════════════════
+(function () {
+  const pinWrap    = document.getElementById('cases-pin-wrap');
+  const sticky     = document.getElementById('cases-sticky');
+  const track      = document.getElementById('cases-track');
+  const fill       = document.getElementById('cases-progress-fill');
+  const currentEl  = document.getElementById('cases-current');
+  const totalEl    = document.getElementById('cases-total');
+  const hint       = document.getElementById('cases-scroll-hint');
+  const dotsWrap   = document.getElementById('cases-dots');
+  const slides     = document.querySelectorAll('.case-slide');
+  const N          = slides.length;
+
+  // Update total counter
+  totalEl.textContent = String(N).padStart(2, '0');
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'cases-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => scrollToSlide(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = dotsWrap.querySelectorAll('.cases-dot');
+
+  // Each slide occupies one full viewport height of scroll distance
+  // pinWrap height = 100vh * N (set via CSS as 600vh for 6 slides)
+  // Keep it in sync with N dynamically
+  pinWrap.style.height = (N * 100) + 'vh';
+
+  let currentIndex = 0;
+  let rafPending = false;
+
+  function setSlide(idx) {
+    idx = Math.max(0, Math.min(N - 1, idx));
+    if (idx === currentIndex && rafPending) return;
+    currentIndex = idx;
+
+    // Translate track
+    const pct = idx * 100;
+    track.style.transition = 'transform 0.72s cubic-bezier(0.76,0,0.24,1)';
+    track.style.transform = `translateX(-${pct}vw)`;
+
+    // Progress bar
+    fill.style.width = ((idx / (N - 1)) * 100) + '%';
+
+    // Counter
+    currentEl.textContent = String(idx + 1).padStart(2, '0');
+
+    // Dots
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+
+    // Hide scroll hint after first move
+    if (idx > 0) hint.classList.add('hidden');
+    else hint.classList.remove('hidden');
+  }
+
+  function scrollToSlide(idx) {
+    // Calculate the scroll position that corresponds to this slide
+    const wrapTop = pinWrap.getBoundingClientRect().top + window.scrollY;
+    const sectionH = pinWrap.offsetHeight;
+    const step = sectionH / N;
+    const target = wrapTop + step * idx + 1;
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  }
+
+  function onScroll() {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      rafPending = false;
+
+      const wrapTop    = pinWrap.getBoundingClientRect().top;
+      const wrapH      = pinWrap.offsetHeight;
+      const stickyH    = sticky.offsetHeight; // = 100vh
+      const scrollable = wrapH - stickyH;     // total scrollable distance within section
+
+      // How far we've scrolled INTO the pin section (0 → scrollable)
+      const scrolled = Math.max(0, Math.min(-wrapTop, scrollable));
+
+      // Map to slide index (0 → N-1)
+      // Each slide occupies scrollable/N pixels of scroll distance
+      const progress = scrolled / scrollable; // 0 → 1
+      const rawIndex = progress * (N - 1);
+      const idx      = Math.round(rawIndex);
+
+      // Smooth translation: not just snapping but also a smooth in-between glide
+      // while actively scrolling, override transition for instant feel,
+      // then on settle it snaps to the rounded index
+      const exactPct = rawIndex * 100;
+      track.style.transition = 'none';
+      track.style.transform  = `translateX(-${exactPct}vw)`;
+
+      // Update UI with rounded index
+      const displayIdx = Math.min(N - 1, Math.max(0, Math.round(rawIndex)));
+      if (displayIdx !== currentIndex) {
+        currentIndex = displayIdx;
+        fill.style.width = ((displayIdx / (N - 1)) * 100) + '%';
+        currentEl.textContent = String(displayIdx + 1).padStart(2, '0');
+        dots.forEach((d, i) => d.classList.toggle('active', i === displayIdx));
+        if (displayIdx > 0) hint.classList.add('hidden');
+        else hint.classList.remove('hidden');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Also support keyboard arrow keys while section is in view
+  document.addEventListener('keydown', e => {
+    const wrapRect = pinWrap.getBoundingClientRect();
+    const inView   = wrapRect.top <= 0 && wrapRect.bottom >= window.innerHeight;
+    if (!inView) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      scrollToSlide(Math.min(N - 1, currentIndex + 1));
+    }
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      scrollToSlide(Math.max(0, currentIndex - 1));
+    }
+  });
+
+  // Touch swipe support
+  let touchStartY = 0;
+  sticky.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  sticky.addEventListener('touchend', e => {
+    const diff = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(diff) > 40) {
+      scrollToSlide(diff > 0
+        ? Math.min(N - 1, currentIndex + 1)
+        : Math.max(0, currentIndex - 1));
+    }
+  }, { passive: true });
+
+  // Init
+  onScroll();
+})();
+
+// ── HERO SCROLL BADGE ──
+(function(){
+  const heroEl   = document.getElementById('hero');
+  const scrollBtn = document.getElementById('heroScroll');
+
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', () => {
+      const next = heroEl.nextElementSibling;
+      if (next) next.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  function updateBadge() {
+    if (!heroEl || !scrollBtn) return;
+    const progress = Math.min(window.scrollY / heroEl.offsetHeight, 1);
+    scrollBtn.style.opacity = progress > 0.25
+      ? Math.max(0, 1 - (progress - 0.25) / 0.25)
+      : '1';
+  }
+
+  window.addEventListener('scroll', updateBadge, { passive: true });
+})();
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
+}, { threshold: 0.08 });
+revealEls.forEach(el => ro.observe(el));
+
+
+
+// ── SMOOTH ANCHOR SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+// ── FOOTER BACK TO TOP ──
+document.querySelector('footer a[href="#"]').addEventListener('click', e => {
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ══════════════════════════════════════
+// SHAPEGRID — hero background animation
+// Colors matched to --bg / --ink / --line palette
+// ══════════════════════════════════════
+(function () {
+  const canvas   = document.getElementById('shapegrid-canvas');
+  if (!canvas) return;
+  const ctx      = canvas.getContext('2d');
+
+  // ── Config (your color scheme) ──
+  const BORDER_COLOR     = 'rgba(17,17,16,0.10)'; // --line, slightly softer
+  const HOVER_FILL_COLOR = '#111110';              // --ink
+  const SQUARE_SIZE      = 44;
+  const SPEED            = 0.45;
+  const DIRECTION        = 'diagonal';
+  const HOVER_TRAIL      = 8;
+
+  let numCols, numRows;
+  const gridOffset   = { x: 0, y: 0 };
+  let hoveredSquare  = null;
+  const trailCells   = [];
+  const cellOpacities = new Map();
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    numCols = Math.ceil(canvas.width  / SQUARE_SIZE) + 3;
+    numRows = Math.ceil(canvas.height / SQUARE_SIZE) + 3;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Hex geometry constants
+  const HEX_HORIZ = SQUARE_SIZE * 1.5;
+  const HEX_VERT  = SQUARE_SIZE * Math.sqrt(3);
+
+  function drawHex(cx, cy, size) {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const angle = (Math.PI / 3) * i;
+      const vx = cx + size * Math.cos(angle);
+      const vy = cy + size * Math.sin(angle);
+      if (i === 0) ctx.moveTo(vx, vy); else ctx.lineTo(vx, vy);
+    }
+    ctx.closePath();
+  }
+
+  function drawGrid() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const colShift = Math.floor(gridOffset.x / HEX_HORIZ);
+    const offsetX  = ((gridOffset.x % HEX_HORIZ) + HEX_HORIZ) % HEX_HORIZ;
+    const offsetY  = ((gridOffset.y % HEX_VERT)  + HEX_VERT)  % HEX_VERT;
+
+    const cols = Math.ceil(canvas.width  / HEX_HORIZ) + 4;
+    const rows = Math.ceil(canvas.height / HEX_VERT)  + 4;
+
+    for (let col = -2; col < cols; col++) {
+      for (let row = -2; row < rows; row++) {
+        const cx  = col * HEX_HORIZ + offsetX;
+        const cy  = row * HEX_VERT + ((col + colShift) % 2 !== 0 ? HEX_VERT / 2 : 0) + offsetY;
+        const key = `${col},${row}`;
+        const alpha = cellOpacities.get(key);
+
+        if (alpha) {
+          ctx.globalAlpha = alpha;
+          drawHex(cx, cy, SQUARE_SIZE);
+          ctx.fillStyle = HOVER_FILL_COLOR;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+
+        drawHex(cx, cy, SQUARE_SIZE);
+        ctx.strokeStyle = BORDER_COLOR;
+        ctx.stroke();
+      }
+    }
+
+    // Vignette — fades grid at edges into page --bg
+    const grad = ctx.createRadialGradient(
+      canvas.width / 2, canvas.height / 2, 0,
+      canvas.width / 2, canvas.height / 2,
+      Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
+    );
+    grad.addColorStop(0,   'rgba(245,244,240,0)');
+    grad.addColorStop(0.55,'rgba(245,244,240,0)');
+    grad.addColorStop(1,   'rgba(245,244,240,0.88)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function updateOpacities() {
+    const targets = new Map();
+    if (hoveredSquare) targets.set(`${hoveredSquare.x},${hoveredSquare.y}`, 1);
+    for (let i = 0; i < trailCells.length; i++) {
+      const t   = trailCells[i];
+      const key = `${t.x},${t.y}`;
+      if (!targets.has(key)) {
+        targets.set(key, (trailCells.length - i) / (trailCells.length + 1));
+      }
+    }
+    for (const [key] of targets) {
+      if (!cellOpacities.has(key)) cellOpacities.set(key, 0);
+    }
+    for (const [key, opacity] of cellOpacities) {
+      const target = targets.get(key) || 0;
+      const next   = opacity + (target - opacity) * 0.15;
+      if (next < 0.005) cellOpacities.delete(key);
+      else cellOpacities.set(key, next);
+    }
+  }
+
+  function animate() {
+    const wrapX = HEX_HORIZ * 2;
+    const wrapY = HEX_VERT;
+    gridOffset.x = (gridOffset.x - SPEED + wrapX) % wrapX;
+    gridOffset.y = (gridOffset.y - SPEED + wrapY) % wrapY;
+    updateOpacities();
+    drawGrid();
+    requestAnimationFrame(animate);
+  }
+
+  // Hex mouse hit detection
+  // Only enable hover within the hero — not where the nav sits
+  canvas.style.pointerEvents = 'auto';
+  canvas.addEventListener('mousemove', e => {
+    // Ignore top 80px (nav area)
+    if (e.clientY < 80) return;
+    const rect     = canvas.getBoundingClientRect();
+    const mx       = e.clientX - rect.left;
+    const my       = e.clientY - rect.top;
+    const colShift = Math.floor(gridOffset.x / HEX_HORIZ);
+    const offsetX  = ((gridOffset.x % HEX_HORIZ) + HEX_HORIZ) % HEX_HORIZ;
+    const offsetY  = ((gridOffset.y % HEX_VERT)  + HEX_VERT)  % HEX_VERT;
+    const col      = Math.round((mx - offsetX) / HEX_HORIZ);
+    const rowOff   = (col + colShift) % 2 !== 0 ? HEX_VERT / 2 : 0;
+    const row      = Math.round((my - rowOff - offsetY) / HEX_VERT);
+
+    if (!hoveredSquare || hoveredSquare.x !== col || hoveredSquare.y !== row) {
+      if (hoveredSquare) {
+        trailCells.unshift({ ...hoveredSquare });
+        if (trailCells.length > HOVER_TRAIL) trailCells.length = HOVER_TRAIL;
+      }
+      hoveredSquare = { x: col, y: row };
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    if (hoveredSquare) {
+      trailCells.unshift({ ...hoveredSquare });
+      if (trailCells.length > HOVER_TRAIL) trailCells.length = HOVER_TRAIL;
+    }
+    hoveredSquare = null;
+  });
+
+  canvas.addEventListener('click', e => e.stopPropagation());
+  animate();
+})();
+</script>
+</body>
+</html>
